@@ -301,9 +301,9 @@ void os_deinit()
 {
 	SDL_DestroyMutex(Os_lock);
 
-	#ifdef HAVE_GLES
+#if defined(HAVE_GLES) && !defined(__vita__)
 	EGL_Close();
-	#endif
+#endif
 	SDL_Quit();
 }
 

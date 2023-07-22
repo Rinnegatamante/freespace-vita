@@ -18,6 +18,7 @@
 
 #define MAX_LINE_WIDTH 128
 
+#ifndef __vita__
 void strlwr (char * str)
 {
 	while (*str) {*str = tolower (*str); str++; }
@@ -27,7 +28,7 @@ void strupr (char * str)
 {
 	while (*str) {*str = toupper (*str); str++; }
 }
-
+#endif
 int filelength (int fd)
 {
 	struct stat buf;

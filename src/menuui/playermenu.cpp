@@ -220,6 +220,10 @@
 #include "alphacolors.h"
 #include "localize.h"
 
+#ifdef __vita__
+#include <vitasdk.h>
+#endif
+
 // --------------------------------------------------------------------------------------------------------
 // Demo title screen
 #if defined(FS2_DEMO) || defined(FS1_DEMO)
@@ -645,7 +649,13 @@ void player_select_do()
 	}
 
 	// process any ui window stuff
-	k = Player_select_window.process();
+	k = Player_select_window.process();	
+#ifdef __vita__
+	SceCtrlData pad;
+	sceCtrlPeekBufferPositive(0, &pad, 1);
+	if (pad.buttons & SCE_CTRL_CROSS)
+		k |= KEY_ENTER;
+#endif
 	if(k){
 		extern void game_process_cheats(int k);
 		game_process_cheats(k);
@@ -1006,7 +1016,7 @@ int player_select_create_new_pilot()
 	
 	// set the input box to have focus
 	Player_select_input_box.set_focus();
-	Player_select_input_box.set_text("");
+	Player_select_input_box.set_text("Player");
 	Player_select_input_box.update_dimensions(Choose_list_coords[gr_screen.res][0], Choose_list_coords[gr_screen.res][1], Choose_list_coords[gr_screen.res][2], gr_get_font_height());	
 
 	return 1;

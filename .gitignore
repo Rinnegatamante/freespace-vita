@@ -1,7 +1,5 @@
 *.o
 *.a
-freespace
-freespace2
 *.MVE
 *.vp
 *.mve
