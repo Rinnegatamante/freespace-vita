@@ -307,6 +307,10 @@ void joy_process(int time_delta)
 		if (i < JOY_NUM_BUTTONS) {
 			if (i < buttons) {
 				state = SDL_JoystickGetButton(sdljoy, i);
+#ifdef __vita__ // We map START to ESC instead
+				if (i == 11)
+					state = 0;
+#endif
 			}
 		} else { 
 			switch (i) {

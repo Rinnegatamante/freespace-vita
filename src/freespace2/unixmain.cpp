@@ -155,6 +155,7 @@ int main(int argc, char **argv)
 	}
 #else
 #include "../vita/freespace2.h"
+	SceIoStat st;
 	if (sceIoGetstat("ux0:data/freespace2/.freespace2/data/players/single/Player.plr", &st) < 0) {
 		sceIoMkdir("ux0:data/freespace2/.freespace2", 0777);
 		sceIoMkdir("ux0:data/freespace2/.freespace2/data", 0777);

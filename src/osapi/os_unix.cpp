@@ -307,10 +307,32 @@ void os_deinit()
 	SDL_Quit();
 }
 
+#ifdef __vita__
+#include <vitasdk.h>
+#endif
+
 extern int SDLtoFS2[SDLK_LAST];
 void os_poll()
 {
 	SDL_Event e;
+
+#ifdef __vita__ // Simulating ESC press with START
+	static uint32_t oldpad;
+	SceCtrlData pad;
+	sceCtrlPeekBufferPositive(0, &pad, 1);
+	if ((pad.buttons & SCE_CTRL_START) && !(oldpad & SCE_CTRL_START)) {
+		SDL_Event sdlevent = {0};
+		sdlevent.type = SDL_KEYDOWN;
+		sdlevent.key.keysym.sym = SDLK_ESCAPE;
+		SDL_PushEvent(&sdlevent);
+	} else if ((oldpad & SCE_CTRL_START) && !(pad.buttons & SCE_CTRL_START)) {
+		SDL_Event sdlevent = {0};
+		sdlevent.type = SDL_KEYUP;
+		sdlevent.key.keysym.sym = SDLK_ESCAPE;
+		SDL_PushEvent(&sdlevent);
+	}
+	oldpad = pad.buttons;
+#endif
 
 	while (SDL_PollEvent (&e)) {
 		switch (e.type) {
