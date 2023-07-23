@@ -1,0 +1,47 @@
+TARGET := freespace
+SOURCES	:= launcher
+
+LIBS = -lSceLibKernel_stub -lvitaGL -lvitashark -lSceShaccCgExt -lSceShaccCg_stub -ltaihen_stub \
+	-lSceAppMgr_stub -lSceCtrl_stub -lm -lSceAppUtil_stub -lmathneon -lSceKernelDmacMgr_stub \
+	-lc -lScePower_stub -lSceCommonDialog_stub -lSceGxm_stub -lSceDisplay_stub -lSceSysmodule_stub  \
+
+CFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.c))
+CPPFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
+BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
+OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
+
+PREFIX  = arm-vita-eabi
+CC      = $(PREFIX)-gcc
+CXX      = $(PREFIX)-g++
+CFLAGS  = -fno-lto -g -Wl,-q -O3
+CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11 -fpermissive
+ASFLAGS = $(CFLAGS)
+
+all: $(TARGET).vpk
+
+%.vpk: %.velf
+	vita-mksfoex -s TITLE_ID=FREESPACE -d ATTRIBUTE2=12 "Freespace Collection" param.sfo
+	vita-pack-vpk -s param.sfo -b eboot.bin $@ \
+		-a livearea/icon0.png=sce_sys/icon0.png \
+		-a livearea/bg0.png=sce_sys/livearea/contents/bg0.png \
+		-a livearea/gta.png=sce_sys/livearea/contents/gta.png \
+		-a livearea/template.xml=sce_sys/livearea/contents/template.xml \
+		-a livearea/pic0.png=sce_sys/pic0.png \
+		-a freespace.bin=freespace.bin \
+		-a freespace2.bin=freespace2.bin \
+		-a freespace2_demo.bin=freespace2_demo.bin \
+		-a livearea/game1.png=images/game1.png \
+		-a livearea/game2.png=images/game2.png \
+		-a livearea/game3.png=images/game3.png
+
+%.velf: %.elf
+	cp $< $<.unstripped.elf
+	$(PREFIX)-strip -g $<
+	vita-elf-create $< $@
+	vita-make-fself -c -s $@ eboot.bin
+
+$(TARGET).elf: $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $@
+
+clean:
+	@rm -rf $(TARGET).velf $(TARGET).elf $(TARGET).sysvelf $(OBJS)
