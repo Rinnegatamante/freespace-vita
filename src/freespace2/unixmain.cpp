@@ -64,7 +64,7 @@ extern "C" int __wrap_remove(const char *fname) {
 
 extern "C" FILE *__real_fopen(char *fname, char *mode);
 extern "C" FILE *__wrap_fopen(char *fname, char *mode) {
-	printf("fopen %s\n", fname);
+	//printf("fopen %s\n", fname);
 	if (!strncmp(fname, "ux0:", 4)) {
 		return __real_fopen(fname, mode);
 	} else {
@@ -88,7 +88,7 @@ extern "C" int __wrap_stat(const char *fname, struct stat *buf) {
 
 extern "C" DIR *__real_opendir(const char *fname);
 extern "C" DIR *__wrap_opendir(const char *fname) {
-	printf("opendir %s\n", fname);
+	//printf("opendir %s\n", fname);
 	if (!strncmp(fname, "ux0:", 4)) {
 		return __real_opendir(fname);
 	} else {

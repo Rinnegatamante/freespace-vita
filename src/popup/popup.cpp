@@ -206,6 +206,10 @@
 #include "alphacolors.h"
 #include "osapi.h"
 
+#ifdef __vita__
+#include <vitaGL.h>
+#endif
+
 #define POPUP_MAX_CHOICES			3					// max number of buttons allowed on popup
 
 #define POPUP_MAX_LINE_CHARS		256				// max chars of msg text allowed per line
@@ -1089,7 +1093,11 @@ int popup_do(popup_info *pi, int flags)
 
 		// don't draw anything 
 		if(!(flags & PF_RUN_STATE)){
+#ifdef __vita__
+			glClear(GL_COLOR_BUFFER_BIT);
+#else
 			gr_restore_screen(screen_id);
+#endif
 		}
 
 		// if this is an input popup, store the input text
@@ -1123,7 +1131,11 @@ int popup_do_with_condition(popup_info *pi, int flags, int(*condition)())
 		
 		game_set_frametime(-1);
 		game_do_state_common(gameseq_get_state());	// do stuff common to all states 
+#ifdef __vita__
+		glClear(GL_COLOR_BUFFER_BIT);
+#else
 		gr_restore_screen(screen_id);
+#endif
 
 		// draw one frame first
 		Popup_window.draw();
