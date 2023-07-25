@@ -28,7 +28,11 @@
 #define _getcwd getcwd
 #define _chdir chdir
 #define _strlwr strlwr
+#ifdef __vita__
+#define _unlink remove
+#else
 #define _unlink unlink
+#endif
 #define _hypot hypot
 #define _access access
 #define byte unsigned char
