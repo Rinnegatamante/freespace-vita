@@ -878,7 +878,11 @@ void hud_show_left_arc()
 // called once per frame from HUD_render_2d() to draw the reticle gauges
 void hud_show_reticle()
 {
+#ifdef __vita__
+	if ( !(Viewer_mode & (VM_EXTERNAL | VM_OTHER_SHIP | VM_CHASE | VM_WARP_CHASE | VM_PADLOCK_ANY )) ) {
+#else
 	if ( !(Viewer_mode & VM_OTHER_SHIP) ) {
+#endif
 		hud_show_top_arc();
 		hud_show_right_arc();
 		hud_show_left_arc();

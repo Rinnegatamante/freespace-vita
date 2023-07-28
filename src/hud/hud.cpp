@@ -1206,8 +1206,11 @@ void hud_show_radar()
 	if ( hud_disabled() ) {
 		return;
 	}
-
+#ifdef __vita__
+	if (!(Viewer_mode & (VM_SLEWED | VM_DEAD_VIEW ))) {
+#else
 	if (!(Viewer_mode & (VM_EXTERNAL | VM_SLEWED | VM_CHASE | VM_DEAD_VIEW | VM_WARP_CHASE | VM_PADLOCK_ANY ))) {
+#endif
 		if ( Game_detail_flags & DETAIL_FLAG_HUD )	{
 			if ( hud_gauge_active(HUD_RADAR) ) {
 				HUD_reset_clip();
@@ -1257,7 +1260,6 @@ void HUD_render_3d(float frametime)
 	if ( hud_disabled() ) {
 		return;
 	}
-
 	if (!(Viewer_mode & (VM_EXTERNAL | VM_SLEWED | VM_CHASE | VM_DEAD_VIEW | VM_WARP_CHASE | VM_PADLOCK_ANY))) {
 
 		hud_show_common_3d_gauges(frametime, 1);
@@ -1481,166 +1483,186 @@ void HUD_render_2d(float frametime)
 	if ( hud_disabled() ) {
 		return;
 	}
-
-	if (!(Viewer_mode & (VM_EXTERNAL | VM_SLEWED | VM_CHASE | VM_DEAD_VIEW | VM_WARP_CHASE | VM_PADLOCK_ANY ))) {		
-		// display Energy Transfer System gauges
-		if ( hud_gauge_active(HUD_ETS_GAUGE) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_ETS_GAUGE) ) {
-				if ( !hud_gauge_popup_active(HUD_ETS_GAUGE) ) {
-					show_gauge_flag=0;
+#ifdef __vita__
+	if (!(Viewer_mode & (VM_SLEWED | VM_DEAD_VIEW ))) {	
+#else
+	if (!(Viewer_mode & (VM_EXTERNAL | VM_SLEWED | VM_CHASE | VM_DEAD_VIEW | VM_WARP_CHASE | VM_PADLOCK_ANY ))) {
+#endif
+/*#ifdef __vita__
+		if (Viewer_mode & (VM_EXTERNAL | VM_CHASE | VM_WARP_CHASE | VM_PADLOCK_ANY)) {
+			// draw the reticle
+			hud_show_reticle();
+			
+			// display the current weapon info for the player ship, with ammo/energy counts
+			if ( hud_gauge_active(HUD_WEAPONS_GAUGE) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_WEAPONS_GAUGE) ) {
+					if ( !hud_gauge_popup_active(HUD_WEAPONS_GAUGE) ) {
+						show_gauge_flag=0;
+					}
+				}
+			
+				if ( show_gauge_flag ) {
+					hud_show_weapons();
 				}
 			}
 			
-			if ( show_gauge_flag ) {
-				hud_show_ets();
-			}
-		}
-
-		// display afterburner fuel gauge
-		if ( hud_gauge_active(HUD_AFTERBURNER_ENERGY) ) {
-			hud_set_gauge_color(HUD_AFTERBURNER_ENERGY);
-			hud_show_afterburner_gauge();
-		}		
-
-		// text flash gauge
-		hud_maybe_show_text_flash_icon();
-
-		// maybe show the netlag icon
-		if(Game_mode & GM_MULTIPLAYER){
-			hud_maybe_show_netlag_icon();
-
-			if(Net_player->flags & NETINFO_FLAG_OBSERVER){
-				hud_render_observer();					
-			}
-		}
-
-		// draw the reticle
-		hud_show_reticle();
-
-		/*
-		// why is this here twice?
-		// display Energy Transfer System gauges
-		if ( hud_gauge_active(HUD_ETS_GAUGE) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_ETS_GAUGE) ) {
-				if ( !hud_gauge_popup_active(HUD_ETS_GAUGE) ) {
-					show_gauge_flag=0;
-				}
+			// draw a border around a talking head if it is playing
+			hud_maybe_blit_head_border();
+			
+			// show objective status gauge
+			if ( hud_gauge_active(HUD_OBJECTIVES_NOTIFY_GAUGE) ) {
+				hud_maybe_display_objective_message();
 			}
 			
-			if ( show_gauge_flag ) {
-				hud_show_ets();
-			}
-		}
-		*/
+			// show the directives popup and/or training popup
+			message_training_display();
+		} else 
+#endif*/
+		{
 
-		// display info on the ships in the escort list
-		if ( hud_gauge_active(HUD_ESCORT_VIEW) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_ESCORT_VIEW) ) {
-				if ( !hud_gauge_popup_active(HUD_ESCORT_VIEW) ) {
-					show_gauge_flag=0;
+			// display Energy Transfer System gauges
+			if ( hud_gauge_active(HUD_ETS_GAUGE) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_ETS_GAUGE) ) {
+					if ( !hud_gauge_popup_active(HUD_ETS_GAUGE) ) {
+						show_gauge_flag=0;
+					}
+				}
+			
+				if ( show_gauge_flag ) {
+					hud_show_ets();
 				}
 			}
-			
-			if ( show_gauge_flag ) {
-				hud_set_gauge_color(HUD_ESCORT_VIEW);
-				hud_display_escort();
-			}
-		}
 
-		// display the current weapon info for the player ship, with ammo/energy counts
-		if ( hud_gauge_active(HUD_WEAPONS_GAUGE) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_WEAPONS_GAUGE) ) {
-				if ( !hud_gauge_popup_active(HUD_WEAPONS_GAUGE) ) {
-					show_gauge_flag=0;
+			// display afterburner fuel gauge
+			if ( hud_gauge_active(HUD_AFTERBURNER_ENERGY) ) {
+				hud_set_gauge_color(HUD_AFTERBURNER_ENERGY);
+				hud_show_afterburner_gauge();
+			}		
+
+			// text flash gauge
+			hud_maybe_show_text_flash_icon();
+
+			// maybe show the netlag icon
+			if(Game_mode & GM_MULTIPLAYER){
+				hud_maybe_show_netlag_icon();
+
+				if(Net_player->flags & NETINFO_FLAG_OBSERVER){
+					hud_render_observer();					
 				}
 			}
-			
-			if ( show_gauge_flag ) {
-				hud_show_weapons();
-			}
-		}
 
-		// display player countermeasures count
-		if ( hud_gauge_active(HUD_CMEASURE_GAUGE) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_CMEASURE_GAUGE) ) {
-				if ( !hud_gauge_popup_active(HUD_CMEASURE_GAUGE) ) {
-					show_gauge_flag=0;
+			// draw the reticle
+			hud_show_reticle();
+
+			// display info on the ships in the escort list
+			if ( hud_gauge_active(HUD_ESCORT_VIEW) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_ESCORT_VIEW) ) {
+					if ( !hud_gauge_popup_active(HUD_ESCORT_VIEW) ) {
+						show_gauge_flag=0;
+					}
+				}
+			
+				if ( show_gauge_flag ) {
+					hud_set_gauge_color(HUD_ESCORT_VIEW);
+					hud_display_escort();
 				}
 			}
+
+			// display the current weapon info for the player ship, with ammo/energy counts
+			if ( hud_gauge_active(HUD_WEAPONS_GAUGE) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_WEAPONS_GAUGE) ) {
+					if ( !hud_gauge_popup_active(HUD_WEAPONS_GAUGE) ) {
+						show_gauge_flag=0;
+					}
+				}
 			
-			if ( show_gauge_flag ) {
-				hud_show_cmeasure_gague();
-			}
-		}
-
-		if ( hud_gauge_active(HUD_WEAPONS_ENERGY) ) {
-			hud_show_weapon_energy_gauge();
-		}
-
-		// show the auto-target icons
-		hud_show_auto_icons();				
-
-		// draw a border around a talking head if it is playing
-		hud_maybe_blit_head_border();
-
-		// draw the status of support ship servicing the player
-		hud_support_view_blit();
-
-		// draw the damage status
-		hud_maybe_show_damage();
-
-		// show mission time 
-		if ( hud_gauge_active(HUD_MISSION_TIME) ) {
-			hud_show_mission_time();
-		}
-
-		// show subspace notify gauge
-		hud_maybe_display_subspace_notify();
-
-		// show objective status gauge
-		if ( hud_gauge_active(HUD_OBJECTIVES_NOTIFY_GAUGE) ) {
-			hud_maybe_display_objective_message();
-		}
-
-		if ( hud_gauge_active(HUD_WINGMEN_STATUS) ) {
-			hud_wingman_status_render();
-		}
-
-		if ( hud_gauge_active(HUD_KILLS_GAUGE) ) {
-			show_gauge_flag=1;
-			// is gauge configured as a popup?
-			if ( hud_gauge_is_popup(HUD_KILLS_GAUGE) ) {
-				if ( !hud_gauge_popup_active(HUD_KILLS_GAUGE) ) {
-					show_gauge_flag=0;
+				if ( show_gauge_flag ) {
+					hud_show_weapons();
 				}
 			}
+
+			// display player countermeasures count
+			if ( hud_gauge_active(HUD_CMEASURE_GAUGE) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_CMEASURE_GAUGE) ) {
+					if ( !hud_gauge_popup_active(HUD_CMEASURE_GAUGE) ) {
+						show_gauge_flag=0;
+					}
+				}
 			
-			if ( show_gauge_flag ) {
-				hud_show_kills_gauge();
+				if ( show_gauge_flag ) {
+					hud_show_cmeasure_gague();
+				}
 			}
-		}
 
-		// show the player shields
-		if ( hud_gauge_active(HUD_PLAYER_SHIELD_ICON) ) {
-			hud_shield_show(Player_obj);
-		}
+			if ( hud_gauge_active(HUD_WEAPONS_ENERGY) ) {
+				hud_show_weapon_energy_gauge();
+			}
 
-		// show the directives popup and/or training popup
-		message_training_display();
+			// show the auto-target icons
+			hud_show_auto_icons();				
 
-		// if this is a multiplayer game, blit any icons/bitmaps indicating voice recording or playback
-		if(Game_mode & GM_MULTIPLAYER){
-			hud_show_voice_status();
+			// draw a border around a talking head if it is playing
+			hud_maybe_blit_head_border();
+
+			// draw the status of support ship servicing the player
+			hud_support_view_blit();
+
+			// draw the damage status
+			hud_maybe_show_damage();
+
+			// show mission time 
+			if ( hud_gauge_active(HUD_MISSION_TIME) ) {
+				hud_show_mission_time();
+			}
+
+			// show subspace notify gauge
+			hud_maybe_display_subspace_notify();
+
+			// show objective status gauge
+			if ( hud_gauge_active(HUD_OBJECTIVES_NOTIFY_GAUGE) ) {
+				hud_maybe_display_objective_message();
+			}
+
+			if ( hud_gauge_active(HUD_WINGMEN_STATUS) ) {
+				hud_wingman_status_render();
+			}
+
+			if ( hud_gauge_active(HUD_KILLS_GAUGE) ) {
+				show_gauge_flag=1;
+				// is gauge configured as a popup?
+				if ( hud_gauge_is_popup(HUD_KILLS_GAUGE) ) {
+					if ( !hud_gauge_popup_active(HUD_KILLS_GAUGE) ) {
+						show_gauge_flag=0;
+					}
+				}
+			
+				if ( show_gauge_flag ) {
+					hud_show_kills_gauge();
+				}
+			}
+
+			// show the player shields
+			if ( hud_gauge_active(HUD_PLAYER_SHIELD_ICON) ) {
+				hud_shield_show(Player_obj);
+			}
+
+			// show the directives popup and/or training popup
+			message_training_display();
+
+			// if this is a multiplayer game, blit any icons/bitmaps indicating voice recording or playback
+			if(Game_mode & GM_MULTIPLAYER){
+				hud_show_voice_status();
+			}
 		}
 	}
 
@@ -1665,7 +1687,7 @@ void HUD_render_2d(float frametime)
 		}
 	}
 
-	hud_render_multi_ping();	
+	hud_render_multi_ping();
 }
 
 
