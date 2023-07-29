@@ -1229,7 +1229,11 @@ void hud_show_target_model()
 
 	// display the miniature model of the target in the target box and shade
 	if ( Game_detail_flags & DETAIL_FLAG_HUD )	{
+#ifdef __vita__
+		if (!(Viewer_mode & (VM_SLEWED | VM_DEAD_VIEW )))
+#else
 		if (!(Viewer_mode & (VM_EXTERNAL | VM_SLEWED | VM_CHASE | VM_DEAD_VIEW | VM_WARP_CHASE | VM_PADLOCK_ANY)))
+#endif
 			hud_render_target_model();
 	}
 }
