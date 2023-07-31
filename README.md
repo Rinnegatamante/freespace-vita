@@ -1,3 +1,12 @@
+# Freespace Vita
+Port based on [ptitSeb's Pandora port](https://github.com/ptitSeb/freespace2).
+
+For installation instruction, check the release page on FuHEN website.
+
+Thanks to Once13one for the Livearea assets and CatoTheYounger for extensively testing the port and providing feedbacks to improve it further.
+
+#Original Readme
+
 # FreeSpace / FreeSpace 2
 ----------------------------------------------
 Freespace 2 (http://www.freespace2.com)
