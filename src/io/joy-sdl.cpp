@@ -305,11 +305,11 @@ void joy_process(int time_delta)
 		int state = 0;
 		
 		if (i < JOY_NUM_BUTTONS) {
-			if (i < buttons) {
+			if (i < buttons) {			
+#ifdef __vita__ // We map controls to keyboard so that we can use mode shifting for more bindings
+				state = 0;
+#else
 				state = SDL_JoystickGetButton(sdljoy, i);
-#ifdef __vita__ // We map START to ESC instead
-				if (i == 11)
-					state = 0;
 #endif
 			}
 		} else { 

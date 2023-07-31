@@ -316,20 +316,82 @@ void os_poll()
 {
 	SDL_Event e;
 
-#ifdef __vita__ // Simulating ESC press with START
+#ifdef __vita__ // Simulating keypresses with buttons
 	static uint32_t oldpad;
+	static SDLMod kmod;
 	SceCtrlData pad;
 	sceCtrlPeekBufferPositive(0, &pad, 1);
-	if ((pad.buttons & SCE_CTRL_START) && !(oldpad & SCE_CTRL_START)) {
-		SDL_Event sdlevent = {0};
-		sdlevent.type = SDL_KEYDOWN;
-		sdlevent.key.keysym.sym = SDLK_ESCAPE;
-		SDL_PushEvent(&sdlevent);
-	} else if ((oldpad & SCE_CTRL_START) && !(pad.buttons & SCE_CTRL_START)) {
-		SDL_Event sdlevent = {0};
-		sdlevent.type = SDL_KEYUP;
-		sdlevent.key.keysym.sym = SDLK_ESCAPE;
-		SDL_PushEvent(&sdlevent);
+	#define IS_PRESSED(x) ((pad.buttons & x) && !(oldpad & x))
+	#define IS_RELEASED(x) ((oldpad & x) && !(pad.buttons & x))
+	#define fake_press(a, b) \
+		{ SDL_Event sdlevent = {0}; \
+		sdlevent.type = a; \
+		sdlevent.key.keysym.sym = b; \
+		sdlevent.key.keysym.mod = kmod; \
+		SDL_PushEvent(&sdlevent); }
+	if (IS_PRESSED(SCE_CTRL_RIGHT)) {
+		fake_press(SDL_KEYDOWN, SDLK_LALT);
+		kmod |= KMOD_ALT;
+	} else if (IS_RELEASED(SCE_CTRL_RIGHT)) {
+		fake_press(SDL_KEYUP, SDLK_LALT);
+		kmod &= ~KMOD_ALT;
+	}
+	if (IS_PRESSED(SCE_CTRL_DOWN)) {
+		fake_press(SDL_KEYDOWN, SDLK_LSHIFT);
+		kmod |= KMOD_SHIFT;
+	} else if (IS_RELEASED(SCE_CTRL_DOWN)) {
+		fake_press(SDL_KEYUP, SDLK_LSHIFT);
+		kmod &= ~KMOD_SHIFT;
+	}
+	if (IS_PRESSED(SCE_CTRL_LEFT)) {
+		fake_press(SDL_KEYDOWN, SDLK_6);
+	} else if (IS_RELEASED(SCE_CTRL_LEFT)) {
+		fake_press(SDL_KEYUP, SDLK_6);
+	}
+	if (IS_PRESSED(SCE_CTRL_UP)) {
+		fake_press(SDL_KEYDOWN, SDLK_5);
+	} else if (IS_RELEASED(SCE_CTRL_UP)) {
+		fake_press(SDL_KEYUP, SDLK_5);
+	}
+	if (IS_PRESSED(SCE_CTRL_SQUARE)) {
+		fake_press(SDL_KEYDOWN, SDLK_4);
+	} else if (IS_RELEASED(SCE_CTRL_SQUARE)) {
+		fake_press(SDL_KEYUP, SDLK_4);
+	}
+	if (IS_PRESSED(SCE_CTRL_CROSS)) {
+		fake_press(SDL_KEYDOWN, SDLK_3);
+	} else if (IS_RELEASED(SCE_CTRL_CROSS)) {
+		fake_press(SDL_KEYUP, SDLK_3);
+	}
+	if (IS_PRESSED(SCE_CTRL_TRIANGLE)) {
+		fake_press(SDL_KEYDOWN, SDLK_1);
+	} else if (IS_RELEASED(SCE_CTRL_TRIANGLE)) {
+		fake_press(SDL_KEYUP, SDLK_1);
+	}
+	if (IS_PRESSED(SCE_CTRL_CIRCLE)) {
+		fake_press(SDL_KEYDOWN, SDLK_2);
+	} else if (IS_RELEASED(SCE_CTRL_CIRCLE)) {
+		fake_press(SDL_KEYUP, SDLK_2);
+	}
+	if (IS_PRESSED(SCE_CTRL_LTRIGGER)) {
+		fake_press(SDL_KEYDOWN, SDLK_l);
+	} else if (IS_RELEASED(SCE_CTRL_LTRIGGER)) {
+		fake_press(SDL_KEYUP, SDLK_l);
+	}
+	if (IS_PRESSED(SCE_CTRL_RTRIGGER)) {
+		fake_press(SDL_KEYDOWN, SDLK_r);
+	} else if (IS_RELEASED(SCE_CTRL_RTRIGGER)) {
+		fake_press(SDL_KEYUP, SDLK_r);
+	}
+	if (IS_PRESSED(SCE_CTRL_START)) {
+		fake_press(SDL_KEYDOWN, SDLK_ESCAPE);
+	} else if (IS_RELEASED(SCE_CTRL_START)) {
+		fake_press(SDL_KEYUP, SDLK_ESCAPE);
+	}
+	if (IS_PRESSED(SCE_CTRL_SELECT)) {
+		fake_press(SDL_KEYDOWN, SDLK_z);
+	} else if (IS_RELEASED(SCE_CTRL_SELECT)) {
+		fake_press(SDL_KEYUP, SDLK_z);
 	}
 	oldpad = pad.buttons;
 #endif
