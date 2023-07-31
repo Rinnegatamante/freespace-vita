@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 		initparam.flags = 0;
 		sceNetInit(&initparam);
 	}
-	vglInitExtended(8 * 1024 * 1024, 960, 544, 8 * 1024 * 1024, SCE_GXM_MULTISAMPLE_4X);
+	vglInitExtended(0, 960, 544, 4 * 1024 * 1024, SCE_GXM_MULTISAMPLE_4X);
 	scePowerSetArmClockFrequency(444);
 	scePowerSetBusClockFrequency(222);
 	scePowerSetGpuClockFrequency(222);
