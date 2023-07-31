@@ -1280,8 +1280,11 @@ void HUD_render_3d(float frametime)
 		if ( Player->control_mode != PCM_NORMAL ) {
 			return;
 		}
-
+#ifdef __vita__
+		hud_show_common_3d_gauges(frametime, 1);
+#else
 		hud_show_common_3d_gauges(frametime, 0);
+#endif
 	}
 
 	if (Viewer_mode & VM_SLEWED) {
