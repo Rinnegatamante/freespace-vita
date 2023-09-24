@@ -1,10 +1,32 @@
 # Freespace Vita
 Port based on [ptitSeb's Pandora port](https://github.com/ptitSeb/freespace2).
 
-For installation instruction, check the release page on FuHEN website.
-
 Thanks to Once13one for the Livearea assets and CatoTheYounger for extensively testing the port and providing feedbacks to improve it further.
 
+## Installation Instruction (PSVita)
+
+NOTE: Check this link for the controls mapping scheme: https://gist.github.com/CatoTheYounger97/612ec59aa5dab4aefe1e09e34b5b1ddf<br><br>
+
+Installation instructions<br><br>
+
+- Install libshacccg.suprx (The fastest way to install it is by running this homebrew: https://vitadb.rinnegatamante.it/#/info/997)
+- Install the vpk.
+<br>
+For Freespace 2 Demo:
+- The demo files are included in freespace_demo.zip. Just extract it in ux0:data.
+<br>
+For Freespace 1 (Full Game):
+- Create ux0:data/freespace folder.
+- Place all files with .vp extension in ux0:data/freespace.
+- Create ux0:data/freespace/.freespace folder.
+- Copy Cache, Data, Data1 and Data2 folders in ux0:data/freespace/.freespace.
+<br>
+For Freespace 2 (Full Game):
+- Create ux0:data/freespace2 folder.
+- Place all files with .vp extension in ux0:data/freespace2.
+- Create ux0:data/freespace2/.freespace2 folder.
+- Place data, data2 and data3 folders in ux0:data/freespace2/.freespace2
+<br>
 #Original Readme
 
 # FreeSpace / FreeSpace 2
