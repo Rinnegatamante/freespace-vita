@@ -11,23 +11,23 @@ Installation instructions<br><br>
 
 - Install libshacccg.suprx (The fastest way to install it is by running this homebrew: https://vitadb.rinnegatamante.it/#/info/997)
 - Install the vpk.
-<br>
+
 For Freespace 2 Demo:
 - The demo files are included in freespace_demo.zip. Just extract it in ux0:data.
-<br>
+
 For Freespace 1 (Full Game):
 - Create ux0:data/freespace folder.
 - Place all files with .vp extension in ux0:data/freespace.
 - Create ux0:data/freespace/.freespace folder.
 - Copy Cache, Data, Data1 and Data2 folders in ux0:data/freespace/.freespace.
-<br>
+
 For Freespace 2 (Full Game):
 - Create ux0:data/freespace2 folder.
 - Place all files with .vp extension in ux0:data/freespace2.
 - Create ux0:data/freespace2/.freespace2 folder.
 - Place data, data2 and data3 folders in ux0:data/freespace2/.freespace2
-<br>
-#Original Readme
+
+# Original Readme
 
 # FreeSpace / FreeSpace 2
 ----------------------------------------------
