@@ -466,6 +466,7 @@
  * $NoKeywords: $
  */
 
+#include <stdint.h>
 #include "missionscreencommon.h"
 #include "missionweaponchoice.h"
 #include "missionshipchoice.h"
@@ -3607,7 +3608,7 @@ void wl_saturate_bank(int ship_slot, int bank)
 
 	slot = &Wss_slots[ship_slot];
 
-	if ( (slot->wep[bank] < 0) || (slot->wep_count <= 0) ) {
+	if ( (slot->wep[bank] < 0) || ((uintptr_t)slot->wep_count <= 0) ) {
 		return;
 	}
 

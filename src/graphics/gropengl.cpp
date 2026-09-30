@@ -960,7 +960,7 @@ static void gr_opengl_aabitmap_ex_internal(int x,int y,int w,int h,int sx,int sy
 #ifdef __vita__
 	vglVertexPointerMapped(3, mapped_vtx_head);
 	vglTexCoordPointerMapped(mapped_tex_head);
-	vglDrawObjects(GL_TRIANGLE_FAN, 4, GL_TRUE);
+	vglDrawObjects(GL_TRIANGLE_FAN, 4);
 	mapped_vtx_head += 12;
 	mapped_tex_head += 8;
 #else
@@ -1189,7 +1189,7 @@ void gr_opengl_line(int x1,int y1,int x2,int y2)
 		mapped_vtx_head[1] = sy1;
 		mapped_vtx_head[2] = -0.99f;
 		vglVertexPointerMapped(3, mapped_vtx_head);
-		vglDrawObjects(GL_POINTS, 1, GL_TRUE);
+		vglDrawObjects(GL_POINTS, 1);
 		mapped_vtx_head += 3;
 #else
 		GLfloat vtx1[] = {sx1, sy1, -0.99f};
@@ -1232,7 +1232,7 @@ void gr_opengl_line(int x1,int y1,int x2,int y2)
 	mapped_vtx_head[4] = sy1;
 	mapped_vtx_head[5] = -0.99f;
 	vglVertexPointerMapped(3, mapped_vtx_head);
-	vglDrawObjects(GL_LINES, 2, GL_TRUE);
+	vglDrawObjects(GL_LINES, 2);
 	mapped_vtx_head += 6;
 #else	
 	GLfloat vtx1[] = {sx2, sy2, -0.99f, sx1, sy1, -0.99f};
@@ -1309,7 +1309,7 @@ void gr_opengl_gradient(int x1,int y1,int x2,int y2)
 	mapped_clr_head[7] = aa;
 	vglVertexPointerMapped(3, mapped_vtx_head);
 	vglColorPointerMapped(GL_UNSIGNED_BYTE, mapped_clr_head);
-	vglDrawObjects(GL_LINES, 2, GL_TRUE);
+	vglDrawObjects(GL_LINES, 2);
 	mapped_vtx_head += 6;
 	mapped_clr_head += 8;
 #else
@@ -1662,7 +1662,7 @@ static void gr_opengl_tmapper_internal( int nv, vertex ** verts, uint flags, int
 	vglVertexPointerMapped(4, mapped_vtx_head);
 	vglColorPointerMapped(GL_UNSIGNED_BYTE, mapped_clr_head);
 	if ( flags & TMAP_FLAG_TEXTURED ) vglTexCoordPointerMapped(mapped_tex_head);
-	vglDrawObjects(GL_TRIANGLE_FAN, glidx, GL_TRUE);
+	vglDrawObjects(GL_TRIANGLE_FAN, glidx);
 	mapped_vtx_head += 4 * glidx;
 	mapped_clr_head += 4 * glidx;
 	mapped_tex_head += 2 * glidx;
@@ -2964,7 +2964,7 @@ void gr_opengl_flash(int r, int g, int b)
 		mapped_vtx_head[1] = mapped_vtx_head[4] = y2;
 		mapped_vtx_head[2] = mapped_vtx_head[5] = mapped_vtx_head[8] = mapped_vtx_head[11] = -0.99;
 		vglVertexPointerMapped(3, mapped_vtx_head);
-		vglDrawObjects(GL_TRIANGLE_FAN, 4, GL_TRUE);
+		vglDrawObjects(GL_TRIANGLE_FAN, 4);
 		mapped_vtx_head += 12;
 #else
 		GLfloat vtx1[] = {

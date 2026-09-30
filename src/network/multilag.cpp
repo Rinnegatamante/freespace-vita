@@ -112,6 +112,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #endif
+#include <stdint.h>
 #include "pstypes.h"
 #include "multi.h"
 #include "multilag.h"
@@ -590,7 +591,7 @@ DCF(lag_max, "")
 	// parse the argument and change things around accordingly
 	dc_get_arg(ARG_INT);
 	if(Dc_arg_type & ARG_INT){			
-		if((Dc_arg >=0) && (Dc_arg_int < Multi_lag_base)){
+		if(((uintptr_t)Dc_arg >=0) && (Dc_arg_int < Multi_lag_base)){
 			dc_printf("Max value smaller than base value, ignoring...");
 		} else {
 			if(Dc_arg_int < 0){

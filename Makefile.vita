@@ -27,7 +27,7 @@ LDFLAGS	+= -lSDL -lvitaGL -lvitashark -lmathneon -lSceShaccCgExt -lSceShaccCg_st
 	-lpthread -lSceAudio_stub -lSceAudioIn_stub -lSceHid_stub -lz -lScePower_stub \
 	-lSceAppMgr_stub -lSceCommonDialog_stub -lSceCtrl_stub -lSceGxm_stub -lSceMotion_stub -lSceNet_stub \
 	-lSceTouch_stub -lSceSysmodule_stub -lSceKernelDmacMgr_stub -lSceDisplay_stub -lSceIme_stub
-CFLAGS=-g -DPLAT_UNIX -Iinclude/ -DHAVE_GLES \
+CFLAGS=-std=gnu++11 -g -DPLAT_UNIX -Iinclude/ -DHAVE_GLES \
 	-Wno-narrowing -Wl,-q,--wrap,fopen,--wrap,stat,--wrap,opendir,--wrap,remove,--wrap,sceTouchPeek
 CFLAGS+=-fsigned-char -Wno-format-y2k -Ofast -I$(VITASDK)/arm-vita-eabi/include/SDL
 CFLAGS+=-ffast-math -pipe -mcpu=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=hard -fsingle-precision-constant -mno-unaligned-access -fpermissive

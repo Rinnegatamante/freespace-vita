@@ -16,6 +16,7 @@ CXX      = $(PREFIX)-g++
 CFLAGS  = -fno-lto -g -Wl,-q -O3
 CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11 -fpermissive
 ASFLAGS = $(CFLAGS)
+LDFLAGS += -Wl,--defsym=__sce_headroom=0x10000
 
 all: $(TARGET).vpk
 
@@ -40,7 +41,7 @@ all: $(TARGET).vpk
 	vita-make-fself -c -s $@ eboot.bin
 
 $(TARGET).elf: $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ $(LIBS) -o $@
 
 clean:
 	@rm -rf $(TARGET).velf $(TARGET).elf $(TARGET).sysvelf $(OBJS)
